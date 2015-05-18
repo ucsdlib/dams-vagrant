@@ -1,0 +1,6 @@
+grant codeBase "file:/usr/share/tomcat7/lib/-" {
+  permission java.security.AllPermission;
+};
+grant codeBase "file:/var/lib/tomcat7/solr/lib/-" {
+  permission java.security.AllPermission;
+};

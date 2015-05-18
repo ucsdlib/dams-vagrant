@@ -27,3 +27,14 @@ apt-get -y install wget curl
 
 # More helpful packages
 apt-get -y install htop tree zsh fish
+
+# Postgresql
+apt-get -y install postgresql
+
+# Image Magick
+apt-get -y install imagemagick
+
+# Ffmpeg
+sudo add-apt-repository ppa:mc3man/trusty-media
+sudo apt-get update
+sudo apt-get install -y ffmpeg

@@ -12,16 +12,5 @@ if [ ! -d $DOWNLOAD_DIR ]; then
   mkdir $DOWNLOAD_DIR
 fi
 
-FEDORA_VERSION=4.1.2-SNAPSHOT
-FEDORA_TAG=4.1.1-audit.2
-# true to enable auth, false to disable it
-FEDORA_AUTH=false
-FEDORA_AUDIT=true
-FEDORA_AUDIT_LOCATION=/audit
-
-
-FUSEKI_VERSION=1.1.2
-FUSEKI_HOME=/usr/share/fuseki
-
 SOLR_VERSION=4.10.3
 SOLR_HOME=/var/lib/tomcat7/solr
