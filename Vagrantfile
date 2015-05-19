@@ -6,7 +6,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
-  config.vm.hostname = "fedora4"
+  config.vm.hostname = "dams"
   config.vm.box = "ubuntu/trusty64"
 
   # Below needed for Vagrant versions < 1.6.x
