@@ -8,7 +8,7 @@ UCSD DAMS Vagrant Virtual Machine
 
 ## Usage
 
-1. `git clone git@github.com:escowles/dams-vagrant.git`
+1. `git clone git@github.com:ucsdlib/dams-vagrant.git`
 2. `cd dams-vagrant`
 3. `vagrant up`
 
