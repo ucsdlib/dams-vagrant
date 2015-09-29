@@ -14,6 +14,13 @@ UCSD DAMS Vagrant Virtual Machine
 
 You can shell into the machine with `vagrant ssh` or `ssh -p 2222 vagrant@localhost`
 
+## DAMSPAS
+
+1. Follow [DAMSPAS Setup
+   Instructions](https://github.com/ucsdlib/damspas/wiki/Setup)
+2. Execute entire test suite to ensure DAMSPAS is configured with the Vagrant
+   VM.
+
 ## Environment
 
 * Ubuntu 14.04 64-bit machine with: 
