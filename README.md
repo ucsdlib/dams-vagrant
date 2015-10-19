@@ -15,6 +15,9 @@ UCSD DAMS Vagrant Virtual Machine
 You can shell into the machine with `vagrant ssh` or `ssh -p 2222 vagrant@localhost`
 
 ## DAMSPAS
+You will need a working copy of damspas on your host system. Since Vagrant forwards the tomcat port, you can simply setup DAMSPAS on your local laptop as you normally would.
+
+You **should not** install damspas within the vagrant vm. If you do, and then you `vagrant destroy` and `vagrant up` to update the VM, you will wipe out a damspas installation in the VM.
 
 1. Follow [DAMSPAS Setup
    Instructions](https://github.com/ucsdlib/damspas/wiki/Setup)
