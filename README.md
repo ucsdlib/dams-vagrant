@@ -14,6 +14,9 @@ UCSD DAMS Vagrant Virtual Machine
 
 You can shell into the machine with `vagrant ssh` or `ssh -p 2222 vagrant@localhost`
 
+You can load test record to vagrant by running cURL commands:
+`curl -u dams:dams -d @your_path/your_file_name http://localhost:8080/dams/api/objects/bbxxxxxxxx`
+
 ## DAMSPAS
 You will need a working copy of damspas on your host system. Since Vagrant forwards the tomcat port, you can simply setup DAMSPAS on your local laptop as you normally would.
 
