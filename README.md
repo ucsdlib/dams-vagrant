@@ -14,7 +14,8 @@ UCSD DAMS Vagrant Virtual Machine
 
 You can shell into the machine with `vagrant ssh` or `ssh -p 2222 vagrant@localhost`
 
-You can load test records into DAMS Repository, installed in the Vagrant VM, using cURL::
+You can load test records into DAMS Repository, installed in the Vagrant VM, using cURL:
+
 `curl -u dams:dams -d @your_damspas_path/damspas/spec/fixtures/damsObject.xml http://localhost:8080/dams/api/objects/bd22194583`
 
 ## DAMSPAS
