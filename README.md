@@ -5,6 +5,8 @@ UCSD DAMS Vagrant Virtual Machine
 
 * [Vagrant](https://www.vagrantup.com/)
 * [VirtualBox](https://www.virtualbox.org/)
+* [Vagrant Triggers Plugin](https://github.com/emyl/vagrant-triggers)
+  * installation: `vagrant plugin install vagrant-triggers`
 
 ## Usage
 
@@ -19,25 +21,17 @@ You can load test records into DAMS Repository, installed in the Vagrant VM, usi
 ```
 curl -u dams:dams -d @your_damspas_path/damspas/spec/fixtures/damsObject.xml http://localhost:8080/dams/api/objects/bd22194583
 ```
-
-## DAMSPAS
-You will need a working copy of damspas on your host system. Since Vagrant forwards the tomcat port, you can simply setup DAMSPAS on your local laptop as you normally would.
-
-You **should not** install damspas within the vagrant vm. If you do, and then you `vagrant destroy` and `vagrant up` to update the VM, you will wipe out a damspas installation in the VM.
-
-1. Follow [DAMSPAS Setup
-   Instructions](https://github.com/ucsdlib/damspas/wiki/Setup)
-2. Execute entire test suite to ensure DAMSPAS is configured with the Vagrant
-   VM.
-
 ## Environment
 
-* Ubuntu 14.04 64-bit machine with: 
+* Ubuntu 14.04 64-bit machine with:
   * [Tomcat 7](http://tomcat.apache.org) at [http://localhost:8080](http://localhost:8080)
     * Manager username = "tomcat", password = "tomcat"
   * [DAMS Repository](https://github.com/ucsdlib/damsrepo) at [http://localhost:8080/dams](http://localhost:8080/dams)
     * Installed in Tomcat container
     * Data and configuration files in "/pub/dams"
+  * [Digital Collections](https://github.com/ucsdlib/damspas) at [http://localhost:3000](http://localhost:3000)
+    * Repository code will be available in the /dams-vagrant root on the host marchine. You can edit source using your editor of choice.
+    * On the guest/vm the code directory is available in `/vagrant/damspas`
   * [Solr 4.0.0](http://lucene.apache.org/solr/) at [http://localhost:8080/solr](http://localhost:8080/solr), for indexing & searching your content.
     * Installed in Tomcat container
     * Data and configuration files in "/var/lib/tomcat7/solr"
