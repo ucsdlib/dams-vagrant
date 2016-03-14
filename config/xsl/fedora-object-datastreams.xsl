@@ -25,10 +25,16 @@
       </xsl:if>
       <xsl:for-each select="//dams:File">
         <xsl:variable name="dsid" select="translate(substring-after(@rdf:about,concat($objid,'/')),'/','_')"/>
+        <xsl:variable name="fext" select="substring($dsid, string-length($dsid) - 3)"/>
         <datastream dsid="_{$dsid}" label="" mimeType="{dams:mimeType}"/>
-        <xsl:if test="dams:mimeType = 'application/pdf'">
-          <datastream dsid="{$fulltextPrefix}_{$dsid}" label="text extracted from {$dsid}" mimeType="text/plain"/>
-        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="dams:mimeType = 'application/pdf' or starts-with(dams:mimeType,'text/html') or starts-with(dams:mimeType,'text/plain') or starts-with(dams:mimeType,'application/msword') or starts-with(dams:mimeType,'application/vnd')">
+            <datastream dsid="{$fulltextPrefix}_{$dsid}" label="text extracted from {$dsid}" mimeType="text/plain"/>
+          </xsl:when>
+          <xsl:when test="$fext = 'docx' or $fext = 'xlsx' or $fext = '.doc' or $fext = '.xls'">
+            <datastream dsid="{$fulltextPrefix}_{$dsid}" label="text extracted from {$dsid}" mimeType="text/plain"/>
+          </xsl:when>
+        </xsl:choose>
       </xsl:for-each>
     </objectDatastreams>
   </xsl:template>
