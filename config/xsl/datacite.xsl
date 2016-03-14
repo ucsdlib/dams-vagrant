@@ -114,7 +114,7 @@
             <xsl:when test="rdf:value != ''">
               <date>
                 <xsl:call-template name="date-type"/>
-                <xsl:value-of select="dams:beginDate"/>
+                <xsl:value-of select="rdf:value"/>
               </date>
             </xsl:when>
           </xsl:choose>
