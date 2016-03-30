@@ -12,6 +12,7 @@ cp config/fedora.yml.sample config/fedora.yml
 cp config/solr.yml.sample config/solr.yml
 cp config/initializers/devise.rb.sample config/initializers/devise.rb
 cp config/initializers/secret_token.rb.sample config/initializers/secret_token.rb
+cp config/share_notify.yml.sample config/share_notify.yml
 
 # install gems
 bundle install
