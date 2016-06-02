@@ -8,6 +8,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.hostname = "dams"
   config.vm.box = "ubuntu/trusty64"
+  # TODO: try with 16.04 LTS
+  # config.vm.box = "ubuntu/xenial64"
 
   # Below needed for Vagrant versions < 1.6.x
   # config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
@@ -28,11 +30,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   shared_dir = "/vagrant"
 
   config.vm.provision "shell", path: "./install_scripts/bootstrap.sh", args: shared_dir
+  config.vm.provision "shell", path: "./install_scripts/phantomjs.sh", args: shared_dir
   config.vm.provision "shell", path: "./install_scripts/java.sh", args: shared_dir
   config.vm.provision "shell", path: "./install_scripts/tomcat7.sh", args: shared_dir
   config.vm.provision "shell", path: "./install_scripts/solr.sh", args: shared_dir
   config.vm.provision "shell", path: "./install_scripts/damsrepo.sh", args: shared_dir
-  config.vm.provision "shell", path: "./install_scripts/wowza.sh", args: shared_dir
   config.vm.provision "shell", path: "./install_scripts/rbenv.sh", privileged: false
   config.vm.provision "shell", path: "./install_scripts/ruby.sh", privileged: false
   config.vm.provision "shell", path: "./install_scripts/damspas.sh", args: shared_dir, privileged: false
