@@ -1,0 +1,33 @@
+# TODO: may need to link installed java if not on path.
+# ln -s /usr/lib/jvm/java-8-oracle /usr/lib/jvm/default-java
+---
+- name: Install damspas local development environment
+  hosts: lib-damspas
+
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - { role: ucsdlib.ansible-role-phantomjs, become: true }
+    - { role: zzet.rbenv, become: true }
+
+  tasks:
+    - name: Update cache
+      become: yes
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Ubuntu dependencies
+      become: yes
+      apt:
+        name: '{{ item }}'
+        state: latest
+      with_items: '{{ damspas_packages }}'
+
+    # TODO: run once basic vm is built w/ packages
+    # - import_tasks: tasks/tomcat.yml
+    # - import_tasks: tasks/solr.yml
+    # - import_tasks: tasks/postgresql.yml
+    # - import_tasks: tasks/damsrepo.yml
+    # - import_tasks: tasks/damspas.yml

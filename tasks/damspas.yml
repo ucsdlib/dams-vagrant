@@ -1,0 +1,25 @@
+---
+- name: Clone damspas
+  git:
+    repo: https://github.com/ucsdlib/damspas.git
+    dest: "{{ damspas_shared_dir }}/damsrepo"
+    version: 'develop'
+
+- name: Install bundler
+  gem:
+    name: bundler
+    state: present
+
+- name: Run database migrations
+  command: "bundle exec rake db:migrate ENV={{ item }}"
+  with_items:
+    - test
+    - development
+
+- name: Run damspas test suite (go get coffee)
+  command: "bundle exec rake spec"
+
+- name: Start unicorn webserver for damspas
+  command: "bundle exec unicorn -D -p 3000"
+
+

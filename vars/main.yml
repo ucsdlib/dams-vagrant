@@ -1,0 +1,39 @@
+---
+damspas_home_dir: '/home/vagrant'
+damspas_shared_dir: '/home/vagrant'
+damspas_solr_version: 4.10.3
+damspas_solr_home: /var/lib/tomcat7/solr
+damspas_damsrepo_home: /pub/dams
+damspas_packages:
+  - build-essential
+  - curl
+  - ffmpeg
+  - git-core
+  - imagemagick
+  - libcurl4-openssl-dev
+  - libffi-dev
+  - libpq-dev
+  - libreadline-dev
+  - libsqlite3-dev
+  - libssl-dev
+  - libxml2-dev
+  - libxslt1-dev
+  - libyaml-dev
+  - nodejs
+  - openjdk-8-jdk
+  - postgresql
+  - postgresql-contrib
+  - python-software-properties
+  - sqlite3
+  - tomcat7
+  - tomcat7-admin
+  - zlib1g-dev
+
+rbenv:
+  env: user
+  version: v1.1.1
+  default_ruby: 2.4.2
+  rubies:
+    - version: 2.4.2
+rbenv_users:
+  - vagrant
