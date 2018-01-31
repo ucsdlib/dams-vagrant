@@ -1,0 +1,31 @@
+---
+- name: Create tomcat7 user
+  become: yes
+  user:
+    name: tomcat7
+    group: tomcat7
+    comment: "Tomcat7 for damsrepo"
+
+- name: Add tomcat rolenames
+  become: yes
+  lineinfile:
+    path: "/etc/tomcat7/tomcat-users.xml"
+    line: '<role rolename="{{ item }}"/>'
+    insertafter: EOF
+    state: present
+  with_items:
+    - dams-curator
+    - dams-rci
+    - dams-manager-admin
+    - manager-gui
+
+- name: Add tomcat usernames
+  become: yes
+  lineinfile:
+    path: "/etc/tomcat7/tomcat-users.xml"
+    line: '<user username="{{ item.username }}" password="{{ item.password }}" roles="{{ item.roles }}"/>'
+    insertafter: EOF
+    state: present
+  with_items:
+    - { username: "dams", password: "dams", roles: "dams-curator,dams-rci,dams-manager-admin" }
+    - { username: "tomcat", password: "tomcat", roles: "manager-gui" }

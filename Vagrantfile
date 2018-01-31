@@ -1,41 +1,88 @@
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
-VAGRANTFILE_API_VERSION = "2"
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  # All Vagrant configuration is done here. The most common configuration
-  # options are documented and commented below. For a complete reference,
-  # please see the online documentation at vagrantup.com.
+# Reasonable Defaults - can be overwridden with environmental variables
+IP_NETWORK=ENV.fetch('IP_NETWORK','172.16.1')
+DEFAULT_BOX=ENV.fetch('DEFAULT_BOX', 'centos/7')
 
-  config.vm.hostname = "dams"
-  config.vm.box = "ubuntu/trusty64"
-  # TODO: try with 16.04 LTS
-  # config.vm.box = "ubuntu/xenial64"
+# List guests here, one per line.
+# name: (REQUIRED), name of the box
+# box: (optional), box to build from. Default DEFAULT_BOX
+# ip: (optional), IP address for local networking. Can be full dotted quad
+#     or the last octet, which will be appended to the IP_NETWORK environmental
+#     variable. Default none.
+# ports: (optional), Array of ports to forward. Can either be integers, or a
+#     hash with supported options.
+# sync: (optional) Should /vagrant be mounted? Default false
+# needs_python: (optional) Install python packages? Default false
+#     (Debian/Ubuntu only)
+# If there are multiple systems, the first one will be marked "primary"
+guests = [
+  {
+    name: 'lib-damspas',
+    box: 'ubuntu/xenial64',
+    ports: [8080, 3000], # tomcat 8080, damspas 3000
+    sync: true
+  }
+]
 
-  # Below needed for Vagrant versions < 1.6.x
-  # config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
-
-  config.vm.network :forwarded_port, guest: 8080, host: 8080 # Tomcat
-  config.vm.network :forwarded_port, guest: 3000, host: 3000 # DAMSPAS
-
-  config.vm.provider "virtualbox" do |v|
-    v.memory = 2048
+Vagrant.configure(2) do |config|
+  guests.each_with_index do |guest, i|
+    config.vm.define "#{guest[:name]}", primary: i==0 do |box|
+      box.vm.box_check_update = false
+      # OS
+      box.vm.box = ( guest.key?(:box) ? guest[:box] : DEFAULT_BOX )
+      unless guest.has_key?(:sync)
+         box.vm.synced_folder '.', '/vagrant', disabled: true
+      else
+        box.vm.synced_folder '.', '/vagrant'
+      end
+      # IP
+      if guest.has_key?(:ip)
+        box.vm.network 'private_network',
+          ip: guest[:ip].to_s.match('\.') ? guest[:ip] : "#{IP_NETWORK}.#{guest[:ip].to_s}"
+      end
+      # Port forwarding
+      if guest.has_key?(:ports)
+        guest[:ports].each do |port|
+          if port.is_a? Integer
+            box.vm.network "forwarded_port", guest: port, host: port
+          else # elif port.is_a? Hash
+            box.vm.network "forwarded_port",
+              guest:        port[:guest],
+              auto_correct: port.has_key?(:auto_correct) ? port[:auto_correct] : true,
+              guest_ip:     port.has_key?(:guest_ip)     ? port[:guest_ip]     : nil,
+              host_ip:      port.has_key?(:host_ip)      ? port[:host_ip]      : nil,
+              host:         port.has_key?(:host)         ? port[:host]         : port[:guest],
+              id:           port.has_key?(:id)           ? port[:id]           : nil,
+              protocol:     port.has_key?(:protocol)     ? port[:protocol]     : nil
+          end
+        end
+      end
+      # Provider specific settings
+      box.vm.provider "virtualbox" do |v|
+        v.cpus   = guest[:cpus]   if guest.has_key?(:cpus)
+        v.gui    = guest[:gui]    if guest.has_key?(:gui)
+        v.memory = guest[:memory] if guest.has_key?(:memory)
+      end
+      config.vm.provider "vmware_fusion" do |v|
+        v.gui             = guest[:gui]    if guest.has_key?(:gui)
+        v.vmx["memsize"]  = guest[:memory] if guest.has_key?(:memory)
+        v.vmx["numvcpus"] = guest[:cpus]   if guest.has_key?(:cpus)
+      end
+      config.vm.provider "vmware_workstation" do |v|
+        v.gui             = guest[:gui]    if guest.has_key?(:gui)
+        v.vmx["memsize"]  = guest[:memory] if guest.has_key?(:memory)
+        v.vmx["numvcpus"] = guest[:cpus]   if guest.has_key?(:cpus)
+      end
+      # Some boxes lack python
+      if guest.has_key?(:needs_python) && guest[:needs_python]
+        box.vm.provision 'shell',
+          inline: <<-'SCRIPT'
+            apt-get update
+            apt-get install --assume-yes python python-apt
+          SCRIPT
+      end
+    end
   end
-
-  # using vagrant-triggers plugin, remove downloads and damspas directories on destroy
-  config.trigger.after :destroy do
-    run "rm -rf damspas"
-    run "rm -rf downloads"
-  end
-
-  shared_dir = "/vagrant"
-
-  config.vm.provision "shell", path: "./install_scripts/bootstrap.sh", args: shared_dir
-  config.vm.provision "shell", path: "./install_scripts/phantomjs.sh", args: shared_dir
-  config.vm.provision "shell", path: "./install_scripts/java.sh", args: shared_dir
-  config.vm.provision "shell", path: "./install_scripts/tomcat7.sh", args: shared_dir
-  config.vm.provision "shell", path: "./install_scripts/solr.sh", args: shared_dir
-  config.vm.provision "shell", path: "./install_scripts/damsrepo.sh", args: shared_dir
-  config.vm.provision "shell", path: "./install_scripts/rbenv.sh", privileged: false
-  config.vm.provision "shell", path: "./install_scripts/ruby.sh", privileged: false
-  config.vm.provision "shell", path: "./install_scripts/damspas.sh", args: shared_dir, privileged: false
 end

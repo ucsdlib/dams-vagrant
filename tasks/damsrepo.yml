@@ -1,0 +1,77 @@
+---
+- name: Clone damsrepo
+  git:
+    repo: https://github.com/ucsdlib/damsrepo.git
+    dest: "{{ damspas_shared_dir }}/damsrepo"
+
+- name: Build damsrepo
+  command: 'cd {{ damspas_shared_dir }}/damsrepo && ant webapp'
+
+- name: Create damsrepo config directories
+  become: yes
+  file:
+    state: directory
+    dest: '{{ item }}'
+    owner: 'tomcat7'
+    group: 'tomcat7'
+  with_items:
+    - '{{ damspas_damsrepo_home }}'
+    - '{{ damspas_damsrepo_home }}/editBackups'
+    - '{{ damspas_damsrepo_home }}/xsl'
+
+- name: Install damsrepo config files
+  become: yes
+  copy:
+    remote_src: yes
+    src: "{{ damspas_damsrepo_home }}/src/{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "lib2/postgresql-9.2-1002.jdbc4.jar", dest: "/usr/share/tomcat7/lib/postgresql-9.2-1002.jdbc4.jar" }
+    - { src: "properties/jhove.conf", dest: "{{ damspas_damsrepo_home }}/jhove.conf" }
+
+- name: Install damsrepo policy and properties files
+  become: yes
+  copy:
+    src: "files/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: 'tomcat7'
+    group: 'tomcat7'
+  with_items:
+    - { src: "dams.properties", dest: "{{ damspas_damsrepo_home }}/dams.properties" }
+    - { src: "99dams.policy", dest: "/etc/tomcat7/policy.d/99dams.policy" }
+
+- name: Install damsrepo xsl files
+  become: yes
+  copy:
+    src: "files/xsl/"
+    dest: "{{ damspas_damsrepo_home }}/xsl/"
+    owner: 'tomcat7'
+    group: 'tomcat7'
+
+- name: Load dams database data
+  command: "{{ damspas_damsrepo_home }}/tmp/commands/{{ item }}"
+  with_items:
+    - "ts-init.sh dams"
+    - "ts-load-raw.sh dams {{ damspas_damsrepo_home }}/tmp/sample/predicates"
+    - "ts-init.sh events"
+    - "ts-load-raw.sh events {{ damspas_damsrepo_home }}/tmp/sample/predicates"
+
+- name: Install dams resource to tomcat server
+  become: yes
+  become_user: tomcat7
+  lineinfile:
+    path: /var/lib/tomcat7/conf/server.xml
+    state: present
+    regexp: '^<GlobalNamingResources>'
+    line: '<Environment name="dams/home" value="/pub/dams" type="java.lang.String"/><GlobalNamingResources><Resource name="jdbc/dams" auth="Container" type="javax.sql.DataSource" username="dams" password="dams" driverClassName="org.postgresql.Driver" maxActive="10" maxIdle="3" url="jdbc:postgresql://localhost/dams" maxWait="5000" validationQuery="select 1" logAbandoned="true" testOnBorrow="true" removeAbandonedTimeout="60" removeAbandoned="true" testOnReturn="true"/>'
+
+- name: Enable and start tomcat service
+  become: yes
+  service:
+    name: tomcat7
+    state: restarted
+    enabled: yes
+
+- name: Deploy damsrepo webapp
+  command: "cd {{ damspas_damsrepo_home }} && ant -Ddeploy.home=/var/lib/tomcat7/webapps local-deploy"
+#

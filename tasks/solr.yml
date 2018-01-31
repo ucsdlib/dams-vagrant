@@ -1,0 +1,25 @@
+---
+- name: Create Solr directory
+  become: yes
+  file:
+    state: directory
+    dest: '{{ damspas_solr_home }}'
+    owner: 'tomcat7'
+    group: 'tomcat7'
+
+- name: Install Solr config files
+  become: yes
+  copy:
+    src: files/config/solr/
+    dest: "{{ damspas_solr_home }}"
+    owner: tomcat7
+    group: tomcat7
+
+- name: Install Solr war
+  become: yes
+  copy:
+    src: files/config/solr.war
+    dest: "/var/lib/tomcat7/webapps/solr.war"
+    owner: tomcat7
+    group: tomcat7
+
