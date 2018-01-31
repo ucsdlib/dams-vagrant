@@ -27,9 +27,6 @@ apt-get -y install git vim
 # Wget and curl
 apt-get -y install wget curl
 
-# More helpful packages
-apt-get -y install htop tree zsh fish
-
 # NodeJS
 apt-get -y install nodejs
 
