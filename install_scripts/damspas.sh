@@ -18,4 +18,4 @@ bundle exec rake spec
 # setup local db and start server
 bundle exec rake db:migrate
 echo "Starting DAMSPAS web server as background process..."
-unicorn -D -p 3000
+bundle exec unicorn -D -p 3000
