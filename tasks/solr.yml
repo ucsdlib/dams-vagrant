@@ -10,7 +10,7 @@
 - name: Install Solr config files
   become: yes
   copy:
-    src: files/config/solr/
+    src: files/solr/
     dest: "{{ damspas_solr_home }}"
     owner: tomcat7
     group: tomcat7
@@ -18,7 +18,7 @@
 - name: Install Solr war
   become: yes
   copy:
-    src: files/config/solr.war
+    src: files/solr.war
     dest: "/var/lib/tomcat7/webapps/solr.war"
     owner: tomcat7
     group: tomcat7

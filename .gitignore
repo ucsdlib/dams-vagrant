@@ -1,4 +1,5 @@
 damspas
+damsrepo
 downloads
 *~
 # ansible/vagrant stuff
@@ -9,4 +10,4 @@ ansible.cfg
 hosts
 *.retry
 *.log
-
+load-dams-data.sh

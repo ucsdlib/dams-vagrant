@@ -8,16 +8,15 @@
 
 - name: Create dams database
   become: yes
+  become_user: postgres
   postgresql_db:
-    login_user: postgres
     name: dams
-    owner: dams
     state: present
 
 - name: Create dams database user
   become: yes
+  become_user: postgres
   postgresql_user:
-    login_user: postgres
     db: dams
     name: dams
     password: dams
