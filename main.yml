@@ -25,9 +25,8 @@
         state: latest
       with_items: '{{ damspas_packages }}'
 
-    # TODO: run once basic vm is built w/ packages
-    # - import_tasks: tasks/tomcat.yml
-    # - import_tasks: tasks/solr.yml
-    # - import_tasks: tasks/postgresql.yml
-    # - import_tasks: tasks/damsrepo.yml
-    # - import_tasks: tasks/damspas.yml
+    - import_tasks: tasks/tomcat.yml
+    - import_tasks: tasks/solr.yml
+    - import_tasks: tasks/postgresql.yml
+    - import_tasks: tasks/damsrepo.yml
+    - import_tasks: tasks/damspas.yml

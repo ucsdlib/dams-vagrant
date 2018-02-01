@@ -1,0 +1,6 @@
+#!/bin/sh
+cd {{ damspas_shared_dir }}/damsrepo
+tmp/commands/ts-init.sh dams
+tmp/commands/ts-load-raw.sh dams tmp/sample/predicates/
+tmp/commands/ts-init.sh events
+tmp/commands/ts-load-raw.sh events tmp/sample/predicates/

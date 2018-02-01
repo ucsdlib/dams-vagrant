@@ -22,7 +22,8 @@ guests = [
     name: 'lib-damspas',
     box: 'ubuntu/xenial64',
     ports: [8080, 3000], # tomcat 8080, damspas 3000
-    sync: true
+    sync: true,
+    needs_python: true
   }
 ]
 
