@@ -23,7 +23,10 @@ guests = [
     box: 'ubuntu/xenial64',
     ports: [8080, 3000], # tomcat 8080, damspas 3000
     sync: true,
-    needs_python: true
+    needs_python: true,
+    memory: 2048,
+    cpus: 2
+
   }
 ]
 
