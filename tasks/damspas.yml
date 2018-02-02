@@ -9,10 +9,10 @@
   bundler:
     state: present
     chdir: "{{ damspas_shared_dir }}/damspas"
-    executable: /home/vagrant/.rbenv/shims/bundle
+    executable: "{{ damspas_home_dir }}/.rbenv/shims/bundle"
 
 - name: Run database migrations
-  shell: /home/vagrant/.rbenv/shims/bundle exec rake db:migrate RAILS_ENV={{ item }}
+  shell: "{{ damspas_home_dir }}/.rbenv/shims/bundle exec rake db:migrate RAILS_ENV={{ item }}"
   args:
     chdir: "{{ damspas_shared_dir }}/damspas"
   with_items:
@@ -20,11 +20,11 @@
     - development
 
 - name: Run damspas test suite (go get coffee)
-  shell: /home/vagrant/.rbenv/shims/bundle exec rake spec
+  shell: "{{ damspas_home_dir }}/.rbenv/shims/bundle exec rake spec"
   args:
     chdir: "{{ damspas_shared_dir }}/damspas"
 
 - name: Start unicorn webserver for damspas
-  shell: /home/vagrant/.rbenv/shims/bundle exec unicorn -D -p 3000
+  shell: "{{ damspas_home_dir }}/.rbenv/shims/bundle exec unicorn -D -p 3000"
   args:
     chdir: "{{ damspas_shared_dir }}/damspas"
