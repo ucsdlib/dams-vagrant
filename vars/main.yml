@@ -34,8 +34,8 @@ damspas_packages:
 rbenv:
   env: user
   version: v1.1.1
-  default_ruby: 2.4.2
+  default_ruby: 2.3.6
   rubies:
-    - version: 2.4.2
+    - version: 2.3.6
 rbenv_users:
   - vagrant
