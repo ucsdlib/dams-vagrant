@@ -6,6 +6,7 @@ UCSD DAMS Vagrant Virtual Machine that is provisioned via Ansible.
 * [VirtualBox](https://www.virtualbox.org/)
 * [Ansible](https://docs.ansible.com/ansible/latest/intro_installation.html)
 
+
 ## Provision
 1. `git clone git@github.com:ucsdlib/dams-vagrant.git`
 2. `cd dams-vagrant`
@@ -30,6 +31,10 @@ vagrant ssh
 cd /vagrant/damspas
 bundle exec unicorn -p 3000
 ```
+
+## Vagrant Configuration
+By default, the `Vagrantfile` will set up the VM with 2G of RAM and 2 CPUs. If you
+want to alter this for your own usage, feel free to do so.
 
 ## Additional Data
 You can load test records into DAMS Repository, installed in the Vagrant VM, using cURL:
