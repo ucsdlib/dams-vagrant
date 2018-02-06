@@ -2,9 +2,9 @@
 UCSD DAMS Vagrant Virtual Machine that is provisioned via Ansible.
 
 ## Requirements
-* [Vagrant](https://www.vagrantup.com/)
-* [VirtualBox](https://www.virtualbox.org/)
-* [Ansible](https://docs.ansible.com/ansible/latest/intro_installation.html)
+* [Vagrant](https://www.vagrantup.com/) -- Version 2+
+* [VirtualBox](https://www.virtualbox.org/) -- Version 5.2+
+* [Ansible](https://docs.ansible.com/ansible/latest/intro_installation.html) -- Version 2.4+
 
 
 ## Provision
