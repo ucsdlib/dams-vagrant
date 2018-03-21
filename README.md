@@ -13,6 +13,12 @@ UCSD DAMS Vagrant Virtual Machine that is provisioned via Ansible.
 3. `make all`
 4. `ansible-playbook main.yml`
 
+> If you want to run the tests against a different branch or tag than `develop` you can
+> specify that in the playbook command above, such as:
+>
+> `ansible-playbook main.yml --extra-vars "damspas_version=feature/my-widget"`
+> This will ensure the initially checked out branch of damspas is what you want.
+
 At this point the virtual machine will be up and running! You do **not** need to
 run `vagrant up`.
 
