@@ -3,7 +3,7 @@
   git:
     repo: https://github.com/ucsdlib/damspas.git
     dest: "{{ damspas_shared_dir }}/damspas"
-    version: 'develop'
+    version: "{{ damspas_version }}"
 
 - name: Bundle install
   bundler:
